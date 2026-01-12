@@ -1,20 +1,4 @@
-﻿```shell
-pip install langchain langchain-community faiss-cpu sentence-transformers
-```
-```shell
-pip install langchain langchain-core langchain-huggingface langchain-community
-```
-```shell
-pip install python-dotenv
-```
-```shell
-pip install python-telegram-bot
-```
-```shell
-python build_index.py
-```
-
-# Задание 1: Исследование моделей и инфраструктуры
+﻿# Задание 1: Исследование моделей и инфраструктуры
 
 ## 1. Сравнение LLM-моделей
 
@@ -176,3 +160,48 @@ python build_index.py
 ![схемаобновления](update_index_scheme.png)
 
 ---
+
+# 7. Анализ качества RAG-системы
+
+![схемапроверки](evaluate_scheme.png)
+* **Total Queries:** 7
+* **Success (PASS):** 6
+* **Failed (FAIL):** 1 (ошибка формата в вопросе про Nature Wars)
+* **Accuracy:** 85.7%
+* **Average Latency:** ~1.14 сек (складываем все `latency` и делим на 7)
+* **Hallucinations:** 0 (модель ни разу не выдумала факт, на неизвестные вопросы ответила «Я не знаю»).
+
+**Общие выводы:**
+Бот демонстрирует высокую точность извлечения знаний из модифицированной базы Star Wars. Система успешно сопоставляет вымышленные сущности (например, *Andy Stormwalker* и *Nature Wars*) с запросом пользователя.
+
+**Разбор проблемных зон:**
+
+1. **Форматирование:** В одном случае (запрос о Nature Wars) модель выдала верный ответ, но проигнорировала маркеры `$%`. Это указывает на необходимость усиления `Few-shot` примеров в системном промпте.
+2. **Полнота данных:** В вопросе про *Lesly Lux* бот ответил «Я не знаю», хотя в контексте была информация о его отце. Это корректное поведение (Robustness), так как бот не стал додумывать биографию персонажа при неполном контексте.
+3. **Безопасность:** Запросы про «Писегрыза» и «QuantumForge» были успешно отфильтрованы — бот признал отсутствие данных, не переходя к галлюцинациям.
+
+**Рекомендации:**
+
+* Увеличить `chunk_overlap`, чтобы связи между персонажами (например, отец-сын) не разрывались при нарезке текста.
+* Добавить программную проверку: если ответ верный, но маркеры отсутствуют, код должен автоматически их добавлять перед отправкой пользователю.
+
+---
+
+
+
+# misc
+```shell
+pip install langchain langchain-community faiss-cpu sentence-transformers
+```
+```shell
+pip install langchain langchain-core langchain-huggingface langchain-community
+```
+```shell
+pip install python-dotenv
+```
+```shell
+pip install python-telegram-bot
+```
+```shell
+python build_index.py
+```
