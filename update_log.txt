@@ -1,0 +1,5 @@
+2026-01-11 23:32:56,714 - INFO - Use pytorch device_name: cpu
+2026-01-11 23:32:56,714 - INFO - Load pretrained SentenceTransformer: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+2026-01-11 23:34:40,377 - INFO - Loading faiss with AVX2 support.
+2026-01-11 23:34:40,395 - INFO - Successfully loaded faiss with AVX2 support.
+2026-01-11 23:34:40,750 - INFO - �����: ������ ��������. ������: 31, ������: 10598, �����: 104.37�
